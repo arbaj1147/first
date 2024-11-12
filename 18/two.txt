@@ -1,0 +1,27 @@
+Q.2 Write a program for LDR to vary the light intensity of LED using Arduino.
+
+// Pin Definitions
+int ldrPin = A0; // LDR connected to Analog pin A0
+int ledPin = 9; // LED connected to PWM pin 9
+void setup() {
+ pinMode(ledPin, OUTPUT); // Set the LED pin as an output
+ Serial.begin(9600); // Start serial communication to monitor LDR values
+}
+void loop() {
+ // Read the value from the LDR (light intensity)
+ int ldrValue = analogRead(ldrPin);
+
+ // Map the LDR value (0 to 1023) to PWM range (0 to 255)
+ int brightness = map(ldrValue, 0, 1023, 0, 255);
+
+ // Set the brightness of the LED based on the LDR value
+ analogWrite(ledPin, brightness);
+
+ // Print the LDR value and brightness to the Serial Monitor
+ Serial.print("LDR Value: ");
+ Serial.print(ldrValue);
+ Serial.print(" -> LED Brightness: ");
+ Serial.println(brightness);
+ // Add a small delay to avoid excessive serial printing
+ delay(100);
+}

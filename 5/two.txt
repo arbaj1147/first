@@ -1,0 +1,25 @@
+Q.2 Write a program to connect with the available Wi-Fi using Arduino.
+#include <ESP8266WiFi.h> 
+
+const char* ssid = "your_SSID";
+const char* password = "your_PASSWORD";
+void setup() {
+Serial.begin(115200);
+delay(10);
+// Connect to Wi-Fi network
+Serial.println();
+Serial.print("Connecting to ");
+Serial.println(ssid);
+WiFi.begin(ssid, password);
+while (WiFi.status() != WL_CONNECTED) {
+delay(500);
+Serial.print(".");
+}
+Serial.println("");
+Serial.println("Wi-Fi connected successfully.");
+Serial.println("IP address: ");
+Serial.println(WiFi.localIP());
+}
+void loop() {
+// Your code here (e.g., HTTP requests, etc.)
+}

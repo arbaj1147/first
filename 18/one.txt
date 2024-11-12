@@ -1,0 +1,80 @@
+import java.util.Observable;
+import java.util.Observer;
+
+class WeatherStation extends Observable {
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    // Method to update measurements and notify observers
+    public void setMeasurement(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        measurementsChanged();
+    }
+
+    // Notify observers of the change
+    public void measurementsChanged() {
+        setChanged();  // Marks this Observable as changed
+        notifyObservers();  // Notifies all observers
+    }
+
+    // Getter methods
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+}
+
+// Observer class representing a display that shows weather updates
+class WeatherDisplay implements Observer {
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    // Called whenever the observed object is changed
+    @Override
+    public void update(Observable observable, Object arg) {
+        if (observable instanceof WeatherStation) {
+            WeatherStation weatherStation = (WeatherStation) observable;
+            this.temperature = weatherStation.getTemperature();
+            this.humidity = weatherStation.getHumidity();
+            this.pressure = weatherStation.getPressure();
+            display();
+        }
+    }
+
+    // Display method to show current weather data
+    public void display() {
+        System.out.println("Current weather:");
+        System.out.println("Temperature: " + temperature + "°C");
+        System.out.println("Humidity: " + humidity + "%");
+        System.out.println("Pressure: " + pressure + " hPa");
+        System.out.println();
+    }
+}
+
+// Main class to demonstrate the Weather Station
+public class WeatherStationDemo {
+    public static void main(String[] args) {
+        // Create an observable WeatherStation instance
+        WeatherStation weatherStation = new WeatherStation();
+
+        // Create an observer (WeatherDisplay) and add it to the weather station
+        WeatherDisplay display = new WeatherDisplay();
+        weatherStation.addObserver(display);
+
+        // Simulate new weather measurements
+        weatherStation.setMeasurement(30.5f, 65f, 1013.1f);
+        weatherStation.setMeasurement(29.7f, 70f, 1012.5f);
+        weatherStation.setMeasurement(28.9f, 72f, 1011.8f);
+    }
+}
